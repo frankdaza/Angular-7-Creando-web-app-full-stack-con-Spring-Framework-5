@@ -54,12 +54,7 @@ public class ClienteServiceImpl implements ClienteService {
 	 */
 	@Override
 	public Cliente save(Cliente cliente) {
-		try {
-			return this.clienteRepository.save(cliente);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return this.clienteRepository.save(cliente);
 	}
 
 	/**

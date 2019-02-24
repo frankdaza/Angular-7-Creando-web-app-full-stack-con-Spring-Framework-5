@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -44,7 +43,7 @@ public class ClienteRestController {
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar la consulta en la base de datos!");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		if (cliente == null) {
@@ -56,21 +55,32 @@ public class ClienteRestController {
 	}
 	
 	@PostMapping("/clientes")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente create(@RequestBody Cliente cliente) {
-		return this.clienteService.save(cliente);
+	public ResponseEntity<?> create(@RequestBody Cliente cliente) throws DataAccessException {
+		Cliente clienteNew = null;		
+		Map<String, Object> response = new HashMap<>();
+		try {
+			clienteNew = this.clienteService.save(cliente);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar el insert en la base de datos!");
+			response.put("error", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "El cliente ha sido creado exitosamente!");
+		response.put("cliente", clienteNew);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/clientes/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id) {
-		Cliente clienteActual = this.clienteService.findById(id);
-		clienteActual.setApellido(cliente.getApellido());
-		clienteActual.setNombre(cliente.getNombre());
-		clienteActual.setEmail(cliente.getEmail());
-		
-		return this.clienteService.save(clienteActual);
-	}
+//	@PutMapping("/clientes/{id}")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id) {
+//		Cliente clienteActual = this.clienteService.findById(id);
+//		clienteActual.setApellido(cliente.getApellido());
+//		clienteActual.setNombre(cliente.getNombre());
+//		clienteActual.setEmail(cliente.getEmail());
+//		
+//		return this.clienteService.save(clienteActual);
+//	}
 	
 	@DeleteMapping("/clientes/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

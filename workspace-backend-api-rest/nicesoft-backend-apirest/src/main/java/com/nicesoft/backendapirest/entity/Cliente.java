@@ -12,7 +12,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="clientes")
@@ -24,11 +23,11 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
+	@Column(nullable = false)
 	private String nombre;
-	@NotEmpty
+	@Column(nullable = false)
 	private String apellido;
-	@NotEmpty
+	@Column(nullable = false, unique = true)
 	private String email;
 	
 	@Column(name="created_at")
