@@ -12,18 +12,19 @@ import swal from 'sweetalert2';
 export class ClientesComponent implements OnInit {
 
   public clientes: Cliente[];
+  private page: number = 0;
 
   constructor(
     private clienteService: ClienteService
   ) { }
 
   ngOnInit() {
-    this.getClientes();
+    this.getClientes(this.page);
   }
 
-  getClientes(): void {
-    this.clienteService.getClientes().subscribe((clientes: Cliente[]) => {
-      this.clientes = clientes;
+  getClientes(page: number): void {
+    this.clienteService.getClientes(page).subscribe((clientes: any) => {
+      this.clientes = clientes.content as Cliente[];
     });
   }
 

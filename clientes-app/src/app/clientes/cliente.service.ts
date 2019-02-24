@@ -20,8 +20,8 @@ export class ClienteService {
     private router: Router
   ) { }
 
-  getClientes(): Observable<Cliente[]> {
-    return this.httpClient.get<Cliente[]>(this.urlEndPoint);
+  getClientes(page: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.urlEndPoint}/page/${page}`);
   }
 
   create(cliente: Cliente): Observable<Cliente> {
@@ -38,7 +38,7 @@ export class ClienteService {
           e.error.mensaje,
           'error'
         );
-        
+
         return throwError(e);
       })
     );
