@@ -1,5 +1,6 @@
 package com.nicesoft.backendapirest.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,20 @@ public class ClienteServiceImpl implements ClienteService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
-
+	
+	/**
+	 * (non-Javadoc)
+	 * @see com.nicesoft.backendapirest.service.ClienteService#findAll()
+	 */
 	@Override
 	public List<Cliente> findAll() {
-		return (List<Cliente>) this.clienteRepository.findAll();
+		List<Cliente> clientes = new ArrayList<>();
+		try {
+			clientes = (List<Cliente>) this.clienteRepository.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return clientes;
 	}
 
 	/**
@@ -29,7 +40,12 @@ public class ClienteServiceImpl implements ClienteService {
 	 */
 	@Override
 	public Cliente findById(Long id) {
-		return this.clienteRepository.findById(id).orElse(null);
+		try {
+			return this.clienteRepository.findById(id).orElse(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -38,7 +54,12 @@ public class ClienteServiceImpl implements ClienteService {
 	 */
 	@Override
 	public Cliente save(Cliente cliente) {
-		return this.save(cliente);
+		try {
+			return this.clienteRepository.save(cliente);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -47,7 +68,11 @@ public class ClienteServiceImpl implements ClienteService {
 	 */
 	@Override
 	public void deleteCliente(Long id) {
-		this.clienteRepository.deleteById(id);
+		try {
+			this.clienteRepository.deleteById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
