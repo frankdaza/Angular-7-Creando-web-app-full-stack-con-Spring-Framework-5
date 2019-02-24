@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +70,15 @@ public class ClienteServiceImpl implements ClienteService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see com.nicesoft.backendapirest.service.ClienteService#findAll(org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<Cliente> findAll(Pageable pageable) {
+		return this.clienteRepository.findAll(pageable);
 	}
 
 }

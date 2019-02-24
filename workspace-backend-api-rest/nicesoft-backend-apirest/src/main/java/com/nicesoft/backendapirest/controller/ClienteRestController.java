@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -71,21 +75,27 @@ public class ClienteRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-//	@PutMapping("/clientes/{id}")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id) {
-//		Cliente clienteActual = this.clienteService.findById(id);
-//		clienteActual.setApellido(cliente.getApellido());
-//		clienteActual.setNombre(cliente.getNombre());
-//		clienteActual.setEmail(cliente.getEmail());
-//		
-//		return this.clienteService.save(clienteActual);
-//	}
+	@PutMapping("/clientes/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id) {
+		Cliente clienteActual = this.clienteService.findById(id);
+		clienteActual.setApellido(cliente.getApellido());
+		clienteActual.setNombre(cliente.getNombre());
+		clienteActual.setEmail(cliente.getEmail());
+		
+		return this.clienteService.save(clienteActual);
+	}
 	
 	@DeleteMapping("/clientes/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		this.clienteService.deleteCliente(id);
+	}
+	
+	@GetMapping("/clientes/page/{page}")
+	public Page<Cliente> index(@PathVariable Integer page) {
+		Pageable pageable = PageRequest.of(page, 2);
+		return this.clienteService.findAll(pageable);
 	}
 
 }
