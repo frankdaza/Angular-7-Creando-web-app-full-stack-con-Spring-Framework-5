@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,12 +36,22 @@ public class Cliente implements Serializable {
 	private Date createAt;
 
 	/**
-	 * 
 	 * @author Frank Edward Daza González
 	 * @version 2019-02-14
 	 */
 	public Cliente() {
 		super();
+	}
+	
+	/**
+	 * Crea la fecha antes de crear un nuevo cliente.
+	 * 
+	 * @author Frank Edward Daza González
+	 * @version 2019-02-24
+	 */
+	@PrePersist
+	public void setCreatedAtPrePersist() {
+		this.createAt = new Date();
 	}
 
 	/**
