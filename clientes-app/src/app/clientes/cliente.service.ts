@@ -16,8 +16,11 @@ export class ClienteService {
   ) { }
 
   getClientes(): Observable<Cliente[]> {
-    // return of(CLIENTES);
     return this.httpClient.get<Cliente[]>(this.urlEndPoint);
+  }
+
+  create(cliente: Cliente): Observable<Cliente> {
+    return this.httpClient.post<Cliente>(this.urlEndPoint, cliente);
   }
 
 }
