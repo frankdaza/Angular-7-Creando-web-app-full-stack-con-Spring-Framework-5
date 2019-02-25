@@ -3,6 +3,7 @@ import { Cliente } from './cliente';
 import { CLIENTES } from './clientes.json';
 import { ClienteService } from './cliente.service';
 import swal from 'sweetalert2';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-clientes',
@@ -12,14 +13,26 @@ import swal from 'sweetalert2';
 export class ClientesComponent implements OnInit {
 
   public clientes: Cliente[];
-  private page: number = 0;
 
   constructor(
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.getClientes(this.page);
+    this.activatedRoute.paramMap.subscribe( params => {
+      // De esta forma reutiliza el objeto, y no me actualiza la informaciòn con los paràmetros de la nueva url
+      // let page: number = +params['page'];
+
+      // De esta forma, hace una nueva instancia de la url, y asi aseguro que me actualiza los parametros de la url
+      let page: number = +params.get('page'); 
+
+      if (!page) {
+        page = 0;
+      }
+
+      this.getClientes(page);
+    });
   }
 
   getClientes(page: number): void {
