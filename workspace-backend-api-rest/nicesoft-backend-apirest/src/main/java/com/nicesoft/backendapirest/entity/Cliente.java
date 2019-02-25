@@ -8,12 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -33,9 +33,9 @@ public class Cliente implements Serializable {
 	@Column(nullable = false)
 	private String apellido;
 	@Email
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = false)
 	private String email;
-	
+	@NotNull	
 	@Column(name="created_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
@@ -48,16 +48,16 @@ public class Cliente implements Serializable {
 		super();
 	}
 	
-	/**
-	 * Crea la fecha antes de crear un nuevo cliente.
-	 * 
-	 * @author Frank Edward Daza González
-	 * @version 2019-02-24
-	 */
-	@PrePersist
-	public void setCreatedAtPrePersist() {
-		this.createAt = new Date();
-	}
+//	/**
+//	 * Crea la fecha antes de crear un nuevo cliente.
+//	 * 
+//	 * @author Frank Edward Daza González
+//	 * @version 2019-02-24
+//	 */
+//	@PrePersist
+//	public void setCreatedAtPrePersist() {
+//		this.createAt = new Date();
+//	}
 
 	/**
 	 * @author Frank Edward Daza González
