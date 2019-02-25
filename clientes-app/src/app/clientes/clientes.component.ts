@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ClientesComponent implements OnInit {
 
   public clientes: Cliente[];
+  public paginator: any;
 
   constructor(
     private clienteService: ClienteService,
@@ -36,8 +37,9 @@ export class ClientesComponent implements OnInit {
   }
 
   getClientes(page: number): void {
-    this.clienteService.getClientes(page).subscribe((clientes: any) => {
-      this.clientes = clientes.content as Cliente[];
+    this.clienteService.getClientes(page).subscribe((response: any) => {
+      this.clientes = response.content as Cliente[];
+      this.paginator = response;
     });
   }
 
@@ -59,7 +61,7 @@ export class ClientesComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.clienteService.delete(cliente.id).subscribe(cliente => {
-          this.getClientes();
+          this.getClientes(0);
 
           swalWithBootstrapButtons.fire(
             'Cliente Eliminado!',
