@@ -39,6 +39,8 @@ public class Cliente implements Serializable {
 	@Column(name="created_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
+	
+	private String foto;
 
 	/**
 	 * @author Frank Edward Daza González
@@ -147,6 +149,24 @@ public class Cliente implements Serializable {
 	 */
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
+	}
+
+	/**
+	 * @author Frank Edward Daza González
+	 * 2019-03-05
+	 * @return the foto
+	 */
+	public String getFoto() {
+		return foto;
+	}
+
+	/**
+	 * @author Frank Edward Daza González
+	 * 2019-03-05
+	 * @param foto the foto to set
+	 */
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 }
