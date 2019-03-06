@@ -1,4 +1,5 @@
 package com.nicesoft.backendapirest.controller;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -97,6 +98,18 @@ public class ClienteRestController {
 	@DeleteMapping("/clientes/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
+		Cliente cliente = this.clienteService.findById(id);
+		String nombreFotoAnterior =  cliente.getFoto();
+		
+		if (nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
+			Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
+			File archivoFotoAnterior = rutaFotoAnterior.toFile();
+			
+			if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+				archivoFotoAnterior.delete();
+			}
+		}
+		
 		this.clienteService.deleteCliente(id);
 	}
 	
@@ -121,6 +134,17 @@ public class ClienteRestController {
 				response.put("mensaje", "Error al subir la imagen: " + nombreArchivo);
 				response.put("error", e.getMessage());
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			String nombreFotoAnterior =  cliente.getFoto();
+			
+			if (nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
+				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
+				File archivoFotoAnterior = rutaFotoAnterior.toFile();
+				
+				if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
+				}
 			}
 			
 			cliente.setFoto(nombreArchivo);
