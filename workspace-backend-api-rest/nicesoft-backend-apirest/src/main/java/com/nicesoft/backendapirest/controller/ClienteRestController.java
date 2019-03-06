@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -40,6 +42,8 @@ import com.nicesoft.backendapirest.service.ClienteService;
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
+	
+	private final Logger log = LoggerFactory.getLogger(ClienteRestController.class);
 	
 	@Autowired
 	private ClienteService clienteService;
@@ -131,6 +135,7 @@ public class ClienteRestController {
 		if (!archivo.isEmpty()) {
 			String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "_");
 			Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+			log.info(rutaArchivo.toString());
 			
 			try {
 				Files.copy(archivo.getInputStream(), rutaArchivo);
@@ -163,6 +168,7 @@ public class ClienteRestController {
 	@GetMapping("/uploads/img/{nombreFoto:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
 		Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
+		log.info(rutaArchivo.toString());
 		Resource resource = null;
 		
 		try {
