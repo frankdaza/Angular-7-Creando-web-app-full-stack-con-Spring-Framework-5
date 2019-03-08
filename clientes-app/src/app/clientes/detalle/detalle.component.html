@@ -23,8 +23,13 @@
                 <label class="custom-file-label" for="inputGroupFile04">Seleccionar foto</label>
               </div>
               <div class="input-group-append">
-                <button (click)="subirFoto()"
-                  class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Subir foto</button>
+                <button [disabled]="!fotoSeleccionada"
+                  (click)="subirFoto()"
+                  class="btn btn-outline-secondary" 
+                  type="button" 
+                  id="inputGroupFileAddon04">
+                  Subir foto
+                </button>
               </div>
             </div>
 
