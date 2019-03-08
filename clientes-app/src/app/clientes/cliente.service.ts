@@ -3,7 +3,7 @@ import { CLIENTES } from './clientes.json';
 import { Cliente } from './cliente.js';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import swal from 'sweetalert2';
@@ -50,6 +50,28 @@ export class ClienteService {
 
   delete(id: number): Observable<Cliente> {
     return this.httpClient.delete<Cliente>(`${this.urlEndPoint}/${id}`);
+  }
+
+  subirFoto(archivo: File, id: number): Observable<Cliente> {
+    let formData = new FormData();
+    formData.append("archivo", archivo);
+    formData.append("id", id.toString());
+
+    return this.httpClient.post<Cliente>(`${this.urlEndPoint}/upload/`, formData)
+      .pipe(
+        map((response: any) => response.cliente as Cliente),
+        catchError(e => {
+          this.router.navigate(['/clientes']);
+
+          swal.fire(
+            'Error al editar',
+            e.error.mensaje,
+            'error'
+          );
+
+          return throwError(e);
+        })
+      );
   }
 
 }
