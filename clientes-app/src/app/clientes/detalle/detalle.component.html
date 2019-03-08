@@ -33,6 +33,14 @@
               </div>
             </div>
 
+            <div *ngIf="progreso > 0" class="progress">
+              <div class="progress-bar progress-bar-striped" role="progressbar"
+                [ngStyle]="{'width': progreso + '%' }" 
+                attr.aria-valuenow="{{ progreso }} " aria-valuemin="0" aria-valuemax="100">
+                {{ progreso }}%
+              </div>
+            </div>
+
         </div>
         <div class="col-sm">
           <img class="img-thumbnail rounded img-responsive"

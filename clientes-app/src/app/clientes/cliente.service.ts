@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CLIENTES } from './clientes.json';
 import { Cliente } from './cliente.js';
 import { Observable, throwError } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -52,26 +52,16 @@ export class ClienteService {
     return this.httpClient.delete<Cliente>(`${this.urlEndPoint}/${id}`);
   }
 
-  subirFoto(archivo: File, id: number): Observable<Cliente> {
+  subirFoto(archivo: File, id: number): Observable<HttpEvent<{}>> {
     let formData = new FormData();
     formData.append("archivo", archivo);
     formData.append("id", id.toString());
 
-    return this.httpClient.post<Cliente>(`${this.urlEndPoint}/upload`, formData)
-      .pipe(
-        map((response: any) => response.cliente as Cliente),
-        catchError(e => {
-          this.router.navigate(['/clientes']);
+    const req = new HttpRequest('POST', `${this.urlEndPoint}/upload`, formData, {
+      reportProgress: true
+    });
 
-          swal.fire(
-            'Error al editar',
-            e.error.mensaje,
-            'error'
-          );
-
-          return throwError(e);
-        })
-      );
+    return this.httpClient.request(req);
   }
 
 }
