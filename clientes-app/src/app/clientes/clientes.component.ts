@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Cliente } from './cliente';
 import { CLIENTES } from './clientes.json';
 import { ClienteService } from './cliente.service';
@@ -12,8 +12,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ClientesComponent implements OnInit {
 
+  public clienteSeleccionado: Cliente;  
   public clientes: Cliente[];
   public paginator: any;
+  
 
   constructor(
     private clienteService: ClienteService,
@@ -71,6 +73,10 @@ export class ClientesComponent implements OnInit {
         });
       }
     })
+  }
+
+  abrirModal(cliente: Cliente) {
+    this.clienteSeleccionado = cliente;
   }
 
 }
