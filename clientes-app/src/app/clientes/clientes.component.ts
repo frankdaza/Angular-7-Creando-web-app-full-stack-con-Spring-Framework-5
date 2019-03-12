@@ -16,6 +16,7 @@ export class ClientesComponent implements OnInit {
   public clienteSeleccionado: Cliente;  
   public clientes: Cliente[];
   public paginator: any;
+  public urlEndPointImagenes: string = 'http://127.0.0.1:8080/api/uploads/img';
   
 
   constructor(
