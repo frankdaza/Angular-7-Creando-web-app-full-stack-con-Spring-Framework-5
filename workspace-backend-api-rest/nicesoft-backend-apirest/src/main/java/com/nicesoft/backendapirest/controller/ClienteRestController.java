@@ -37,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nicesoft.backendapirest.entity.Cliente;
 import com.nicesoft.backendapirest.service.ClienteService;
+import com.nicesoft.backendapirest.service.UploadFileService;
 
 @CrossOrigin(origins= {"http://127.0.0.1:4200"})
 @RestController
@@ -47,6 +48,8 @@ public class ClienteRestController {
 	
 	@Autowired
 	private ClienteService clienteService;
+	@Autowired
+	private UploadFileService uploadFileService;
 	
 	@GetMapping("/clientes")
 	public List<Cliente> index() {
@@ -109,14 +112,7 @@ public class ClienteRestController {
 		Cliente cliente = this.clienteService.findById(id);
 		String nombreFotoAnterior =  cliente.getFoto();
 		
-		if (nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
-			Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
-			File archivoFotoAnterior = rutaFotoAnterior.toFile();
-			
-			if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
-				archivoFotoAnterior.delete();
-			}
-		}
+		this.uploadFileService.eliminar(nombreFotoAnterior);
 		
 		this.clienteService.deleteCliente(id);
 	}
@@ -133,12 +129,9 @@ public class ClienteRestController {
 		Cliente cliente = this.clienteService.findById(id);
 		
 		if (!archivo.isEmpty()) {
-			String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "_");
-			Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
-			log.info(rutaArchivo.toString());
-			
+			String nombreArchivo = null;
 			try {
-				Files.copy(archivo.getInputStream(), rutaArchivo);
+				nombreArchivo = this.uploadFileService.copiar(archivo);
 			} catch (IOException e) {
 				response.put("mensaje", "Error al subir la imagen: " + nombreArchivo);
 				response.put("error", e.getMessage());
@@ -146,16 +139,7 @@ public class ClienteRestController {
 			}
 			
 			String nombreFotoAnterior =  cliente.getFoto();
-			
-			if (nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
-				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
-				File archivoFotoAnterior = rutaFotoAnterior.toFile();
-				
-				if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
-					archivoFotoAnterior.delete();
-				}
-			}
-			
+			this.uploadFileService.eliminar(nombreFotoAnterior);
 			cliente.setFoto(nombreArchivo);
 			this.clienteService.save(cliente);
 			response.put("cliente", cliente);
@@ -167,26 +151,12 @@ public class ClienteRestController {
 	
 	@GetMapping("/uploads/img/{nombreFoto:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
-		Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
-		log.info(rutaArchivo.toString());
 		Resource resource = null;
 		
 		try {
-			resource = new UrlResource(rutaArchivo.toUri());
-		} catch (MalformedURLException e) {
+			resource = this.uploadFileService.cargar(nombreFoto);
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
-		if (!resource.exists() && !resource.isReadable()) {
-			rutaArchivo = Paths.get("src/main/resources/static/images").resolve("notuser.png").toAbsolutePath();
-			
-			try {
-				resource = new UrlResource(rutaArchivo.toUri());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-			
-			log.error("Error no se pudo cargar la imagen: " + nombreFoto);
 		}
 		
 		HttpHeaders httpHeaders = new HttpHeaders();
