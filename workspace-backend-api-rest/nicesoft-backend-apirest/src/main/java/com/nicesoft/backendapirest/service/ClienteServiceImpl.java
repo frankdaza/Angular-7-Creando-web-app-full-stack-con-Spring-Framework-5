@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nicesoft.backendapirest.entity.Cliente;
+import com.nicesoft.backendapirest.entity.Region;
 import com.nicesoft.backendapirest.repository.ClienteRepository;
 
 @Service
@@ -79,6 +80,15 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public Page<Cliente> findAll(Pageable pageable) {
 		return this.clienteRepository.findAll(pageable);
+	}
+
+	/** 
+	 * (non-Javadoc)
+	 * @see com.nicesoft.backendapirest.service.ClienteService#findAllRegiones()
+	 */
+	@Override
+	public List<Region> findAllRegiones() {
+		return this.clienteRepository.findAllRegiones();
 	}
 
 }

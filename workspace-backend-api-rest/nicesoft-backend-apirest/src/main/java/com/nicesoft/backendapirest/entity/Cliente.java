@@ -47,11 +47,12 @@ public class Cliente implements Serializable {
 	
 	private String foto;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "region_id")
+	@NotNull
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="region_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Region region;
-
+	
 	/**
 	 * @author Frank Edward Daza González
 	 * @version 2019-02-14
@@ -181,21 +182,20 @@ public class Cliente implements Serializable {
 
 	/**
 	 * @author Frank Edward Daza González
-	 * @version 2019-03-17
+	 * @version 2019-03-19
 	 * @return the region
 	 */
-	
 	public Region getRegion() {
 		return region;
 	}
 
 	/**
 	 * @author Frank Edward Daza González
-	 * @version 2019-03-17
+	 * @version 2019-03-19
 	 * @param region the region to set
 	 */
 	public void setRegion(Region region) {
 		this.region = region;
 	}
-	
+
 }

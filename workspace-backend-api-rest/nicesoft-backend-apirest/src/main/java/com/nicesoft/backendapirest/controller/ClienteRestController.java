@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nicesoft.backendapirest.entity.Cliente;
+import com.nicesoft.backendapirest.entity.Region;
 import com.nicesoft.backendapirest.service.ClienteService;
 import com.nicesoft.backendapirest.service.UploadFileService;
 
@@ -102,6 +103,7 @@ public class ClienteRestController {
 		clienteActual.setNombre(cliente.getNombre());
 		clienteActual.setEmail(cliente.getEmail());
 		clienteActual.setCreateAt(cliente.getCreateAt());
+		clienteActual.setRegion(cliente.getRegion());;
 		
 		return this.clienteService.save(clienteActual);
 	}
@@ -164,5 +166,35 @@ public class ClienteRestController {
 		
 		return new ResponseEntity<Resource>(resource, httpHeaders, HttpStatus.OK);
 	}
+	
+	@GetMapping("/clientes/regiones")
+	public List<Region> listarRegiones() {
+		return this.clienteService.findAllRegiones();
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
