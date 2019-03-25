@@ -1,5 +1,4 @@
 package dev.nicesoft.pruebaspringjwt.domain;
-
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -13,8 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Table(name="personas")
 public class Persona implements Serializable {
 
-	private static final long serialVersionUID = -8584705583298346326L;
-	
+	private static final long serialVersionUID = 284796237982514963L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,9 +24,15 @@ public class Persona implements Serializable {
 	@NotEmpty
 	private String apellidos;
 	
-	
 	public Persona() {
 		super();
+	}
+
+	public Persona(Long id, @NotEmpty String nombres, @NotEmpty String apellidos) {
+		super();
+		this.id = id;
+		this.nombres = nombres;
+		this.apellidos = apellidos;
 	}
 
 	public Long getId() {
