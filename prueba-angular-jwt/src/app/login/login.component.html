@@ -1,3 +1,12 @@
-<p>
-  login works!
-</p>
+<br><br>
+<form class="form-signin" [formGroup]="loginForm">
+  <input type="email" id="email" class="form-control" placeholder="Correo electrónico"
+    formControlName="email" required autofocus>
+  
+  <input type="password" id="password" class="form-control" placeholder="Contraseña"
+    formControlName="password" required>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
+
+  <p class="mt-5 mb-3 text-muted">nicesoft.dev &copy; 2019</p>
+</form>
