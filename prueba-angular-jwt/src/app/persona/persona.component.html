@@ -1,20 +1,41 @@
-<br><br>
+<div class="container">
+  <br><br>
 
-<table class="table container">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombres</th>
-      <th scope="col">Apellidos</th>
-      <th scope="col">Opciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-  </tbody>
-</table>
+  <form [formGroup]="personaForm" (ngSubmit)="crearPersona()">
+    <div class="row">
+      <div class="col">
+        <input type="text" formControlName="nombres" 
+          class="form-control" placeholder="Nombres" required>
+      </div>
+      <div class="col">
+        <input type="text" formControlName="apellidos" 
+          class="form-control" placeholder="Apellidos" required>
+      </div>
+      <div class="col">
+        <button type="submit"
+          class="btn btn-primary">Crear Persona</button>
+      </div>
+    </div>
+  </form>
+
+  <br><br>
+
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombres</th>
+        <th scope="col">Apellidos</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="personas !== undefined">
+      <tr *ngFor="let persona of personas; let i=index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ persona.nombres | titlecase }}</td>
+        <td>{{ persona.apellidos | titlecase }}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
