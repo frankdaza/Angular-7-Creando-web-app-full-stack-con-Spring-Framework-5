@@ -25,4 +25,12 @@ export class PersonaService {
     return this.httpClient.post(this.urlEndPoint, persona, this.httpOptions);
   }
 
+  eliminarPersona(id: number): Observable<any> {
+    return this.httpClient.delete(`${this.urlEndPoint}/${id}`, this.httpOptions);
+  }
+
+  actualizarPersona(persona: Persona): Observable<any> {
+    return this.httpClient.put(this.urlEndPoint, persona, this.httpOptions);
+  }
+
 }

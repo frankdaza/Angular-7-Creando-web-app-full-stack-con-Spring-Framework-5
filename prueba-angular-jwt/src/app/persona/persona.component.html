@@ -4,16 +4,13 @@
   <form [formGroup]="personaForm" (ngSubmit)="crearPersona()">
     <div class="row">
       <div class="col">
-        <input type="text" formControlName="nombres" 
-          class="form-control" placeholder="Nombres" required>
+        <input type="text" formControlName="nombres" class="form-control" placeholder="Nombres" required>
       </div>
       <div class="col">
-        <input type="text" formControlName="apellidos" 
-          class="form-control" placeholder="Apellidos" required>
+        <input type="text" formControlName="apellidos" class="form-control" placeholder="Apellidos" required>
       </div>
       <div class="col">
-        <button type="submit"
-          class="btn btn-primary">Crear Persona</button>
+        <button type="submit" class="btn btn-primary">Crear Persona</button>
       </div>
     </div>
   </form>
@@ -34,8 +31,50 @@
         <th scope="row">{{ i + 1 }}</th>
         <td>{{ persona.nombres | titlecase }}</td>
         <td>{{ persona.apellidos | titlecase }}</td>
-        <td></td>
+        <td>
+          <img data-toggle="modal" data-target="#exampleModal" 
+            src="assets/images/edit.png" alt="update" width="30px"
+            (click)="preEditar(persona)">
+
+          <img (click)="eliminarPersona(persona.id)" 
+            src="assets/images/delete.png" alt="delete" width="30px">
+        </td>
       </tr>
     </tbody>
   </table>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar información</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="personaEditarForm">
+            <div class="form-group">
+              <label for="nombresEditar">Nombres</label>
+              <input type="text" formControlName="nombresEditar"
+                class="form-control" id="nombresEditar" placeholder="Nombres">
+            </div>
+            <div class="form-group">
+              <label for="apellidos">Apellidos</label>
+              <input type="text" formControlName="apellidosEditar" 
+                class="form-control" id="apellidos" placeholder="Apellidos">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" (click)="actualizarPersona()" 
+            class="btn btn-primary">Actualizar Persona</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

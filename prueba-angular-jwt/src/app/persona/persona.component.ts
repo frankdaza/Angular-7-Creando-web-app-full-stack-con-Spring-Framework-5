@@ -16,6 +16,8 @@ export class PersonaComponent implements OnInit, OnDestroy {
 
   personas: Persona[];
   personaForm: FormGroup;
+  personaEditarForm: FormGroup;
+  personaActual: Persona;
 
   constructor(
     private personaService: PersonaService,
@@ -26,6 +28,11 @@ export class PersonaComponent implements OnInit, OnDestroy {
     this.personaForm = this.formBuilder.group({
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required]
+    });
+
+    this.personaEditarForm = this.formBuilder.group({
+      nombresEditar: ['', Validators.required],
+      apellidosEditar: ['', Validators.required]
     });
 
     this.listarPersonas();
@@ -76,6 +83,55 @@ export class PersonaComponent implements OnInit, OnDestroy {
 
   limpiarFormulario(): void {
     this.personaForm.reset();
+  }
+
+  eliminarPersona(id: number): void {
+    Swal.fire({
+      title: 'Está seguro que desea eliminar este usuario?',
+      text: "No podrás revertir esta operación!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.subscription = this.personaService.eliminarPersona(id).subscribe(
+          (data: any) => {
+            this.listarPersonas();
+
+            Swal.fire(
+              'Eliminado!',
+              'El usuario ha sido eliminado exitosamente',
+              'success'
+            );
+          }
+        );        
+      }
+    });
+  }
+
+  preEditar(personaActual: Persona): void {
+    this.personaActual = personaActual;
+    this.personaEditarForm.get('nombresEditar').setValue(this.personaActual.nombres);
+    this.personaEditarForm.get('apellidosEditar').setValue(this.personaActual.apellidos);
+  }
+
+  actualizarPersona(): void {    
+    this.personaActual.nombres = this.personaEditarForm.get('nombresEditar').value;
+    this.personaActual.apellidos = this.personaEditarForm.get('apellidosEditar').value;
+    this.subscription = this.personaService.actualizarPersona(this.personaActual).subscribe(
+      (data: any) => {
+        Swal.fire({
+          text: data.mensaje,
+          type: 'success',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    );
   }
 
 }
