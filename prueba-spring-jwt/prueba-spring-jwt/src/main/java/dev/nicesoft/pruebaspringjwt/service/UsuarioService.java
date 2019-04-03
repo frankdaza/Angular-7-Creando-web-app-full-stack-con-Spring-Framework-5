@@ -19,7 +19,7 @@ import dev.nicesoft.pruebaspringjwt.domain.Usuario;
 import dev.nicesoft.pruebaspringjwt.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UsuarioService implements IUsuarioService, UserDetailsService {
 	
 	private static final Logger log = LoggerFactory.getLogger(UsuarioService.class);
 
@@ -47,6 +47,11 @@ public class UsuarioService implements UserDetailsService {
 			log.error(e.getMessage(), e);			
 		}
 		return null;
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+		return this.usuarioRepository.findByUsername(username);
 	}
 
 }
