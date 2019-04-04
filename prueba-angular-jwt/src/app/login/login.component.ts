@@ -54,6 +54,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authService.guardarUsuario(response.access_token);
         this.authService.guardarToken(response.access_token);
         this.router.navigate(['/persona']);
+      }, error => {
+        if (error.status === 400 || error.status === 401) {
+          Swal.fire(
+            'Error Login',
+            'Usuario o contraseña incorrectas!',
+            'error'
+          );
+        }
       });
     }
   }
