@@ -51,6 +51,16 @@ export class AuthService {
     return undefined;
   }
 
+  isAuthenticated(): boolean {
+    let payload = this.obtenerDatosToken(this.token);
+    
+    if (payload && payload.user_name && payload.user_name.length > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
   public get usuario(): Usuario {
     if (this._usuario) {
       return this._usuario;

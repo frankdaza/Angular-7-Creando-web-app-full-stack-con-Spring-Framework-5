@@ -30,6 +30,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
     });
+    
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/persona']);
+    }
   }
   
   ngOnDestroy(): void {
