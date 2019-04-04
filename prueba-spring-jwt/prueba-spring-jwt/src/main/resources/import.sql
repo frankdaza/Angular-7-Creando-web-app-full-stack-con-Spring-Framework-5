@@ -3,8 +3,8 @@ insert into personas (nombres, apellidos) values ('vanessa', 'porras');
 insert into personas (nombres, apellidos) values ('obed', 'daza martínez');
 insert into personas (nombres, apellidos) values ('martha belly', 'gonzález hernández');
 
-insert into usuarios (enabled, password, username) values (true, '$2a$10$ZCTO/T2y7NpYO6IRlBvYFOzB7QH74o0ZaN66uI4rCs6uNcnx6M8F.', 'frank');
-insert into usuarios (enabled, password, username) values (true, '$2a$10$GHXeOt1m3nspMOQOdxYL1OZdNONaPOtYU/6fZxRPwSZqajNTy1S6i', 'vanessa');
+insert into usuarios (enabled, password, username, nombre, apellido, email) values (true, '$2a$10$ZCTO/T2y7NpYO6IRlBvYFOzB7QH74o0ZaN66uI4rCs6uNcnx6M8F.', 'frank', 'frank edward', 'daza gonzález', 'frank.daza2@gmail.com');
+insert into usuarios (enabled, password, username, nombre, apellido, email) values (true, '$2a$10$GHXeOt1m3nspMOQOdxYL1OZdNONaPOtYU/6fZxRPwSZqajNTy1S6i', 'vanessa', 'vanessa', 'porras', 'vanessa@gmail.com');
 
 insert into roles (nombre) values ('ROLE_USER');
 insert into roles (nombre) values ('ROLE_ADMIN');
