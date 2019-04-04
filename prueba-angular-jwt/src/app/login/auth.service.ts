@@ -8,6 +8,9 @@ import { Usuario } from './usuario';
 })
 export class AuthService {
 
+  private _usuario: Usuario;
+  private _token: string;
+
   constructor(
     private httpClient: HttpClient
   ) { }
@@ -23,6 +26,51 @@ export class AuthService {
     params.set('password', usuario.password);
 
     return this.httpClient.post<any>(urlOauthEndPoint, params.toString(), { headers: httpHeaders });
+  }
+
+  guardarUsuario(token: string) {
+    let payload = this.obtenerDatosToken(token);
+    this._usuario = new Usuario();
+    this._usuario.nombre = payload.nombre;
+    this._usuario.apellido = payload.apellido;
+    this._usuario.email = payload.email;
+    this._usuario.username = payload.user_name;
+    this._usuario.roles = payload.authorities;
+    sessionStorage.setItem('usuario', JSON.stringify(this._usuario));
+  }
+
+  guardarToken(token: string) {
+    this._token = token;
+    sessionStorage.setItem('token', token);
+  }
+
+  private obtenerDatosToken(token: string): any {
+    if (token) {
+      return JSON.parse(atob(token.split('.')[1]));
+    }
+    return undefined;
+  }
+
+  public get usuario(): Usuario {
+    if (this._usuario) {
+      return this._usuario;
+    } else if (sessionStorage.getItem('usuario')) {
+      this._usuario = JSON.parse(sessionStorage.getItem('usuario')) as Usuario;
+      return this._usuario;
+    } else {
+      return new Usuario();
+    }
+  }
+
+  public get token(): string {
+    if (this._token) {
+      return this._token;
+    } else if (sessionStorage.getItem('token')) {
+      this._token = JSON.parse(sessionStorage.getItem('token')) as string;
+      return this._token;
+    } else {
+      return undefined;
+    }
   }
 
 }

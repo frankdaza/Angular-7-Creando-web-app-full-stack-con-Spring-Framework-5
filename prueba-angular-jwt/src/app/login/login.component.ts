@@ -50,9 +50,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       usuario.username = this.loginForm.get('username').value.trim();
       usuario.password = this.loginForm.get('password').value.trim();
 
-      this.subscription = this.authService.login(usuario).subscribe((response: any) => {
-        let payload = JSON.parse(atob(response.access_token.split('.')[1]));
-        console.log(payload);
+      this.subscription = this.authService.login(usuario).subscribe((response: any) => {        
+        this.authService.guardarUsuario(response.access_token);
+        this.authService.guardarToken(response.access_token);
         this.router.navigate(['/persona']);
       });
     }
