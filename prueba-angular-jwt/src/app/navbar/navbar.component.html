@@ -9,10 +9,11 @@
     <ul class="navbar-nav mr-auto">      
     </ul>
     <div class="form-inline my-2 my-lg-0">
-      <ul class="navbar-nav mr-auto">
+      <ul *ngIf="authService.isAuthenticated()" 
+        class="navbar-nav mr-auto">       
         <li class="nav-item active">
           <a class="nav-link" routerLink="/login">Cerrar Sesión</a>
-        </li>
+        </li>        
       </ul>
     </div>
   </div>

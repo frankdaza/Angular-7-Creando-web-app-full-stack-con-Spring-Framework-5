@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    let payload = this.obtenerDatosToken(this.token);
+    let payload = this.obtenerDatosToken(this._token);
     
     if (payload && payload.user_name && payload.user_name.length > 0) {
       return true;
