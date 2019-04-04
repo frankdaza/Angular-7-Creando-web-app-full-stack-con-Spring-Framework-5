@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PersonaComponent } from './persona/persona.component';
 import { PersonaService } from './persona/persona.service';
+import { AuthService } from './login/auth.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PersonaService } from './persona/persona.service';
     HttpClientModule
   ],
   providers: [
-    PersonaService
+    PersonaService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })
