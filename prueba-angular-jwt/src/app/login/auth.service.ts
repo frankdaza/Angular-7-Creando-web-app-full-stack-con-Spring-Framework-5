@@ -61,6 +61,12 @@ export class AuthService {
     return false;
   }
 
+  logout(): void {
+    this._token = undefined;
+    this._usuario = undefined;
+    sessionStorage.clear();
+  }
+
   public get usuario(): Usuario {
     if (this._usuario) {
       return this._usuario;
