@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { Persona } from './persona';
 import { Router } from '@angular/router';
 import { AuthService } from '../login/auth.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +30,15 @@ export class PersonaService {
   }
 
   handleError(e: any): boolean {
-    if (e.status === 401 || e.status === 403) {
+    if (e.status === 401) {
       this.router.navigate(['/login']);
       return true;
+    } else if(e.status === 403) {
+      Swal.fire(
+        'Acceso Denegado',
+        'Hola, no tienes los permisos necesarios para acceder a este recurso!',
+        'warning'
+      );
     } else {
       return false;
     }
