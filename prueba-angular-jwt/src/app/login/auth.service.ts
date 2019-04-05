@@ -67,6 +67,16 @@ export class AuthService {
     sessionStorage.clear();
   }
 
+  hasRole(role: string): boolean {
+    const usuario: Usuario = this.usuario;
+
+    if (this.usuario.roles.includes(role)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public get usuario(): Usuario {
     if (this._usuario) {
       return this._usuario;
