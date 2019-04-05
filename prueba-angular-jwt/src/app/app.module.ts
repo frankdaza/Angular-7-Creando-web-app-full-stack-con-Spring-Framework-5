@@ -11,6 +11,7 @@ import { PersonaComponent } from './persona/persona.component';
 import { PersonaService } from './persona/persona.service';
 import { AuthService } from './login/auth.service';
 import { TokenInterceptor } from './login/interceptors/token.interceptor';
+import { AuthInterceptor } from './login/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TokenInterceptor } from './login/interceptors/token.interceptor';
   providers: [
     PersonaService,
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
