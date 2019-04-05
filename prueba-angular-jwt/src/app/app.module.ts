@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PersonaComponent } from './persona/persona.component';
 import { PersonaService } from './persona/persona.service';
 import { AuthService } from './login/auth.service';
+import { TokenInterceptor } from './login/interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AuthService } from './login/auth.service';
   ],
   providers: [
     PersonaService,
-    AuthService
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
