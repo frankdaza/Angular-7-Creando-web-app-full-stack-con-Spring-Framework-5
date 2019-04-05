@@ -11,8 +11,8 @@
     <div class="form-inline my-2 my-lg-0">
       <ul *ngIf="authService.isAuthenticated()" 
         class="navbar-nav mr-auto">       
-        <li class="nav-item active">
-          <a class="nav-link" href="" (click)="logout()">Cerrar Sesión</a>
+        <li class="nav-item active" (click)="logout()">
+          <a class="nav-link">Cerrar Sesión</a>
         </li>        
       </ul>
     </div>
