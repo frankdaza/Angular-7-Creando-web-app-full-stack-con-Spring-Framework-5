@@ -44,7 +44,7 @@ export class AuthService {
     sessionStorage.setItem('token', token);
   }
 
-  private obtenerDatosToken(token: string): any {
+  obtenerDatosToken(token: string): any {
     if (token) {
       return JSON.parse(atob(token.split('.')[1]));
     }
