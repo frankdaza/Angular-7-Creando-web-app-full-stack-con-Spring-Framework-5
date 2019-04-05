@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/persona']);
+    } else {
+      this.authService.logout();
     }
   }
   
