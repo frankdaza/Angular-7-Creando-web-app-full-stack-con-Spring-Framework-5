@@ -20,8 +20,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		// TODO Auto-generated method stub
-		WebSocketMessageBrokerConfigurer.super.configureMessageBroker(registry);
+		registry.enableSimpleBroker("/chat/");
+		registry.setApplicationDestinationPrefixes("/app");
 	}
 	
 }
