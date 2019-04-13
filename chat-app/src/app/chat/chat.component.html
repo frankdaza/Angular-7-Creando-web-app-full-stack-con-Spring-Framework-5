@@ -14,8 +14,15 @@
     </ul>
   </div>
   <div *ngIf="conectado"
-    class="card-body" style="overflow-y: scroll; height: 360px;">
+    class="card-body" 
+    style="overflow-y: scroll; height: 360px;">
+    <ul class="list-group list-group-flush">
+      
+      <li class="list-group-item list-group-item-light" *ngFor="let mensaje of mensajes">
+        {{ mensaje.fecha | date:'shortTime' }} : {{ mensaje.texto }}
+      </li>
 
+    </ul>
   </div>
   <div *ngIf="conectado"
     class="card-footer">
@@ -24,7 +31,10 @@
         <input formControlName="texto"
           type="text" class="form-control" placeholder="Escribe un mensaje...">        
       </div>
-      <button class="btn btn-primary" type="submit">Enviar</button>
+      <button (click)="enviarMensaje()"
+        class="btn btn-primary" type="submit">
+        Enviar
+      </button>
     </form>
   </div>
 </div>

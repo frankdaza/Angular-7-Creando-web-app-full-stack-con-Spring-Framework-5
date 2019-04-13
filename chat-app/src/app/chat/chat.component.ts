@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Client } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Mensaje } from './domain/mensaje';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-chat',
@@ -12,6 +14,7 @@ export class ChatComponent implements OnInit {
 
   chatForm: FormGroup;
   conectado: boolean;
+  mensajes: Mensaje[] = [];
 
   private client: Client;
 
@@ -21,7 +24,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {    
     this.chatForm = this.formBuilder.group({
-      texto: ''
+      texto: ['', Validators.required]
     });
 
     this.conectado = false;
@@ -34,6 +37,12 @@ export class ChatComponent implements OnInit {
     this.client.onConnect = (frame) => {
       console.log(`Conectados: ${this.client.connected} : ${frame}`);
       this.conectado = true;
+
+      this.client.subscribe('/chat/mensaje', e => {
+        let mensaje: Mensaje = JSON.parse(e.body) as Mensaje;
+        mensaje.fecha = new Date(mensaje.fecha);
+        this.mensajes.push(mensaje);
+      });
     };
 
     this.client.onDisconnect = (frame) => {
@@ -48,6 +57,26 @@ export class ChatComponent implements OnInit {
 
   desconectar(): void {
     this.client.deactivate();
+  }
+
+  enviarMensaje(): void {
+    if (this.chatForm.valid) {
+      let mensajeNuevo: Mensaje = new Mensaje();
+      mensajeNuevo.texto  = this.chatForm.get('texto').value.trim();
+      
+      this.client.publish({
+        destination: '/app/mensaje',
+        body: JSON.stringify(mensajeNuevo)
+      });
+
+      this.chatForm.get('texto').setValue('');
+    } else {
+      Swal.fire(
+        'Campos obligatorios!',
+        'No puede enviar un mensaje vacío.',
+        'warning'
+      );
+    }  
   }
 
 }
