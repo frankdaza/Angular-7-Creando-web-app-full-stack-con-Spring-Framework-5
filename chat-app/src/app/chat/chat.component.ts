@@ -11,16 +11,20 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class ChatComponent implements OnInit {
 
   chatForm: FormGroup;
+  conectado: boolean;
+
   private client: Client;
 
   constructor(
     private formBuilder: FormBuilder
   ) { }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.chatForm = this.formBuilder.group({
       texto: ''
     });
+
+    this.conectado = false;
 
     this.client = new Client();
     this.client.webSocketFactory = () => {
@@ -29,9 +33,21 @@ export class ChatComponent implements OnInit {
 
     this.client.onConnect = (frame) => {
       console.log(`Conectados: ${this.client.connected} : ${frame}`);
+      this.conectado = true;
     };
 
+    this.client.onDisconnect = (frame) => {
+      console.log(`Desconectados: ${!this.client.connected} : ${frame}`);
+      this.conectado = false;
+    };
+  }
+
+  conectar(): void {
     this.client.activate();
+  }
+
+  desconectar(): void {
+    this.client.deactivate();
   }
 
 }
